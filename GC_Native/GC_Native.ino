@@ -2,19 +2,19 @@
 
 // Button Pins
 const int Pin_ButtonA = 4;
-const int Pin_ButtonB = 6;
-const int Pin_ButtonX = 5;
-const int Pin_ButtonY = 7;
+const int Pin_ButtonB = 2;
+const int Pin_ButtonX = 3;
+const int Pin_ButtonY = 1;
 
-const int Pin_ButtonL = 8;
-const int Pin_ButtonR = 3;
+const int Pin_ButtonL = 5;
+const int Pin_ButtonR = 6;
 
-const int Pin_ButtonStart = 2;
+const int Pin_ButtonStart = 7;
 
-const int Pin_DpadUp    = 9;
+const int Pin_DpadUp    = 8;
 const int Pin_DpadDown  = 10;
-const int Pin_DpadLeft  = 12;
-const int Pin_DpadRight = 11;
+const int Pin_DpadLeft  = 11;
+const int Pin_DpadRight = 9;
 
 bool previousStateA = false;
 unsigned long timeA;
@@ -61,20 +61,20 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
   
-  boolean buttonA = !digitalRead(Pin_ButtonA);
-  boolean buttonB = !digitalRead(Pin_ButtonB);
-  boolean buttonX = !digitalRead(Pin_ButtonX);
-  boolean buttonY = !digitalRead(Pin_ButtonY);
+  boolean buttonA = digitalRead(Pin_ButtonA);
+  boolean buttonB = digitalRead(Pin_ButtonB);
+  boolean buttonX = digitalRead(Pin_ButtonX);
+  boolean buttonY = digitalRead(Pin_ButtonY);
 
-  boolean buttonL = !digitalRead(Pin_ButtonL);
-  boolean buttonR = !digitalRead(Pin_ButtonR);
+  boolean buttonL = digitalRead(Pin_ButtonL);
+  boolean buttonR = digitalRead(Pin_ButtonR);
 
-  boolean buttonStart = !digitalRead(Pin_ButtonStart);
+  boolean buttonStart = digitalRead(Pin_ButtonStart);
 
-  boolean dpadUp    = !digitalRead(Pin_DpadUp);
-  boolean dpadDown  = !digitalRead(Pin_DpadDown);
-  boolean dpadLeft  = !digitalRead(Pin_DpadLeft);
-  boolean dpadRight = !digitalRead(Pin_DpadRight);
+  boolean dpadUp    = digitalRead(Pin_DpadUp);
+  boolean dpadDown  = digitalRead(Pin_DpadDown);
+  boolean dpadLeft  = digitalRead(Pin_DpadLeft);
+  boolean dpadRight = digitalRead(Pin_DpadRight);
 
   if(buttonA != previousStateA && currentMillis - timeA > timer)
   {

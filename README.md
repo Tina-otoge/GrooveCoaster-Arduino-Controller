@@ -1,6 +1,4 @@
-# Groove Coaster Arduino Controller
-***⚠️ Full tutorial comming later ⚠️***
+Fork of Meta-Link's Arduino firmware for use with a Groove Coaster controller as
+a Nintendo Switch controller.
 
-To upload on an USB compatible Arduino board (like a Leonardo), using these libraries : 
-  * https://github.com/celclow/SwitchControlLibrary
-  * https://github.com/mike-matera/ArduinoSTL
+Makefile for compiling and flashing using `arduino-cli`, only tested on Linux.
