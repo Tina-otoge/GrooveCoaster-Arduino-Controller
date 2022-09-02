@@ -1,4 +1,4 @@
-SKETCH=GC_Native
+SKETCH:=GC_Native
 CORE=arduino:avr
 BOARD=leonardo
 TTY=/dev/ttyACM0
@@ -18,6 +18,9 @@ flash:
 install-deps:
 	mkdir -p $(HOME)/Arduino/libraries
 	cd $(HOME)/Arduino/libraries && [ -d SwitchControlLibrary ] || git clone https://github.com/celclow/SwitchControlLibrary
-	cd $(HOME)/Arduino/libraries && [ -d ArduinoSTL ] || git clone https://github.com/nholthaus/ArduinoSTL
+	cd $(HOME)/Arduino/libraries && [ -d ArduinoSTL ] || git clone https://github.com/mike-matera/ArduinoSTL
 
-.PHONY: all install compile flash install-deps
+monitor:
+	arduino-cli monitor -p $(TTY) --fqbn $(CORE):$(BOARD)
+
+.PHONY: all install compile flash install-deps monitor
