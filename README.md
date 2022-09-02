@@ -18,3 +18,26 @@ Run `make` to download the dependencies, build and flash the firmware to your bo
 
 
 The reset button of the Leonardo is right under the micro-USB port.
+
+The `config.h` file contains a bunch of options you can tweak.
+
+
+By enabling serial log output, the controller will output the state of every
+button each second.
+
+
+The "Debug" sketch is used to only report the state of each pins as soon as they
+are pressed, useful to find which button is bound to which pin. The pins 12 and
+13 are skipped because I did not use them, comment the `if` block if you use
+them.
+
+
+## Hopefully temporary dirty fixes
+
+You will need the v1.0.0 of SwitchControlLibrary, newest versions do funky stuff
+with the hat.
+
+
+As of 2022-09-03, mike-matera/AndroidSTL has a bug that blocks compilation due
+to "nothrow" now existing in the embedded C++ implementation, I used this branch
+in the meantime https://github.com/mike-matera/ArduinoSTL/pull/82.

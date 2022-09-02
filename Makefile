@@ -1,4 +1,4 @@
-SKETCH:=GC_Native
+SKETCH=main
 CORE=arduino:avr
 BOARD=leonardo
 TTY=/dev/ttyACM0
@@ -10,15 +10,15 @@ install: install-deps
 	arduino-cli core install $(CORE)
 
 compile:
-	arduino-cli compile --fqbn $(CORE):$(BOARD) ./$(SKETCH)
+	arduino-cli compile --clean --warnings all --fqbn $(CORE):$(BOARD) ./$(SKETCH)
 
 flash:
-	arduino-cli upload -p $(TTY) --fqbn $(CORE):$(BOARD) ./$(SKETCH)
+	arduino-cli -v --log-level debug upload -p $(TTY) --fqbn $(CORE):$(BOARD) ./$(SKETCH)
 
 install-deps:
 	mkdir -p $(HOME)/Arduino/libraries
-	cd $(HOME)/Arduino/libraries && [ -d SwitchControlLibrary ] || git clone https://github.com/celclow/SwitchControlLibrary
-	cd $(HOME)/Arduino/libraries && [ -d ArduinoSTL ] || git clone https://github.com/mike-matera/ArduinoSTL
+	cd $(HOME)/Arduino/libraries && [ -d SwitchControlLibrary ] || git clone https://github.com/celclow/SwitchControlLibrary && cd SwitchControlLibrary && git checkout v1.0.0
+	cd $(HOME)/Arduino/libraries && [ -d ArduinoSTL ] || git clone matthijskooijman/ArduinoSTL && cd ArduinoSTL && git checkout omit-new-delete
 
 monitor:
 	arduino-cli monitor -p $(TTY) --fqbn $(CORE):$(BOARD)

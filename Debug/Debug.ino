@@ -10,6 +10,8 @@ void setup()
 void loop()
 {
 	for (int i = 0; i <= MAX_PIN; i += 1) {
+		if (i == 12 || i == 13)
+			continue;
 		if (!digitalRead(i))
 			continue;
 		Serial.write("Pin ");
@@ -17,5 +19,5 @@ void loop()
 		Serial.write(" pressed\r\n");
 	}
 	Serial.flush();
-	delay(1000);
+	delay(10);
 }
