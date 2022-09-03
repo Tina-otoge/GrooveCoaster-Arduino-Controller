@@ -3,12 +3,16 @@
 
 #define REVERSE_PIN_SIGNALS false
 
+// Sends report messages about each button every seconds
 #define SERIAL_LOG_DEBUG false
+
+// Any input on the boosters click will disable all directions inputs on it
+#define CLICK_DISABLES_DIRECTION true
 
 
 // DEBOUNCING
 #define MINIMUM_PRESS_TIME   5
-#define MINIMUM_RELEASE_TIME 30
+#define MINIMUM_RELEASE_TIME 20
 
 
 // PIN MAPPING

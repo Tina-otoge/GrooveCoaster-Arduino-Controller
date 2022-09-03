@@ -17,8 +17,8 @@ flash:
 
 install-deps:
 	mkdir -p $(HOME)/Arduino/libraries
-	cd $(HOME)/Arduino/libraries && [ -d SwitchControlLibrary ] || git clone https://github.com/celclow/SwitchControlLibrary && cd SwitchControlLibrary && git checkout v1.0.0
-	cd $(HOME)/Arduino/libraries && [ -d ArduinoSTL ] || git clone matthijskooijman/ArduinoSTL && cd ArduinoSTL && git checkout omit-new-delete
+	cd $(HOME)/Arduino/libraries && [ -d SwitchControlLibrary ] || git clone https://github.com/Tina-otoge/SwitchControlLibrary
+	cd $(HOME)/Arduino/libraries && [ -d ArduinoSTL ] || git clone https://github.com/matthijskooijman/ArduinoSTL && cd ArduinoSTL && git checkout omit-new-delete
 
 monitor:
 	arduino-cli monitor -p $(TTY) --fqbn $(CORE):$(BOARD)

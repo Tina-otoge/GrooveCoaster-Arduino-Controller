@@ -34,8 +34,8 @@ them.
 
 ## Hopefully temporary dirty fixes
 
-You will need the v1.0.0 of SwitchControlLibrary, newest versions do funky stuff
-with the hat.
+Due to bugs in newer versions of  SwitchControlLibrary, I backported some
+changes to the v1.0.0 and use this one.
 
 
 As of 2022-09-03, mike-matera/AndroidSTL has a bug that blocks compilation due

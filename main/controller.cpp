@@ -57,9 +57,9 @@ static ButtonInfo buttons[BUTTONS_COUNT];
 
 
 void hold_button_a(unsigned long time) {
-    controller.PressButtonA();
+    controller.pressButtonA();
     delay(time);
-    controller.ReleaseButtonA();
+    controller.releaseButtonA();
 }
 
 
@@ -140,7 +140,7 @@ bool HatManager::right = false;
 void press(Pad button) {
     switch (button) {
         case START:
-            return controller.PressButtonPlus();
+            return controller.pressButtonPlus();
         case LBOOSTER_LEFT:
             return HatManager::set_left(true);
         case LBOOSTER_DOWN:
@@ -150,24 +150,24 @@ void press(Pad button) {
         case LBOOSTER_RIGHT:
             return HatManager::set_right(true);
         case LBOOSTER_CLICK:
-            return controller.PressButtonL();
+            return controller.pressButtonL();
         case RBOOSTER_LEFT:
-            return controller.PressButtonY();
+            return controller.pressButtonY();
         case RBOOSTER_DOWN:
-            return controller.PressButtonB();
+            return controller.pressButtonB();
         case RBOOSTER_UP:
-            return controller.PressButtonX();
+            return controller.pressButtonX();
         case RBOOSTER_RIGHT:
-            return controller.PressButtonA();
+            return controller.pressButtonA();
         case RBOOSTER_CLICK:
-            return controller.PressButtonR();
+            return controller.pressButtonR();
     }
 }
 
 void release(Pad button) {
     switch (button) {
         case START:
-            return controller.ReleaseButtonPlus();
+            return controller.releaseButtonPlus();
         case LBOOSTER_LEFT:
             return HatManager::set_left(false);
         case LBOOSTER_DOWN:
@@ -177,22 +177,22 @@ void release(Pad button) {
         case LBOOSTER_RIGHT:
             return HatManager::set_right(false);
         case LBOOSTER_CLICK:
-            return controller.ReleaseButtonL();
+            return controller.releaseButtonL();
         case RBOOSTER_LEFT:
-            return controller.ReleaseButtonY();
+            return controller.releaseButtonY();
         case RBOOSTER_DOWN:
-            return controller.ReleaseButtonB();
+            return controller.releaseButtonB();
         case RBOOSTER_UP:
-            return controller.ReleaseButtonX();
+            return controller.releaseButtonX();
         case RBOOSTER_RIGHT:
-            return controller.ReleaseButtonA();
+            return controller.releaseButtonA();
         case RBOOSTER_CLICK:
-            return controller.ReleaseButtonR();
+            return controller.releaseButtonR();
     }
 }
 
 void handle_hat() {
-    controller.MoveHat(HatManager::getHatInt());
+    controller.moveHat(HatManager::getHatInt());
 }
 
 
@@ -240,8 +240,37 @@ void handle_macros() {
         return;
     // every macros use the START button
 
-    //TODO: Macro for HOME
-    //TODO: Macro for L/R STICK CLICK (Toggle favorite)
+    if (buttons[LBOOSTER_CLICK].state) {
+        controller.pressButtonHome();
+        delay(100);
+        controller.releaseButtonHome();
+    }
+
+    if (buttons[RBOOSTER_CLICK].state) {
+        controller.pressButtonRClick();
+        delay(100);
+        controller.releaseButtonRClick();
+    }
+
+    if (buttons[RBOOSTER_LEFT].state && buttons[RBOOSTER_UP].state)
+        controller.pressButtonCapture();
+    else
+        controller.releaseButtonCapture();
+}
+
+void handle_boosters() {
+    if (buttons[RBOOSTER_CLICK].raw_state) {
+        buttons[RBOOSTER_LEFT].state = false;
+        buttons[RBOOSTER_DOWN].state = false;
+        buttons[RBOOSTER_UP].state = false;
+        buttons[RBOOSTER_RIGHT].state = false;
+    }
+    if (buttons[LBOOSTER_CLICK].raw_state) {
+        buttons[LBOOSTER_LEFT].state = false;
+        buttons[LBOOSTER_DOWN].state = false;
+        buttons[LBOOSTER_UP].state = false;
+        buttons[LBOOSTER_RIGHT].state = false;
+    }
 }
 
 
@@ -257,6 +286,7 @@ void update_buttons() {
     Pad button;
 
     handle_macros();
+    handle_boosters();
 
     for (unsigned int i = 0; i < BUTTONS_COUNT; i += 1) {
         button = PINS_MAP[i].button;
@@ -267,6 +297,7 @@ void update_buttons() {
     }
 
     handle_hat();
+    controller.sendReport();
 }
 
 
