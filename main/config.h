@@ -8,7 +8,17 @@
 
 // Any input on the boosters click will disable all directions inputs on it
 #define CLICK_DISABLES_DIRECTION true
+// Number of ms to wait before the click actually goes through
+#define CLICK_DISABLES_DIRECTION_CLICK_WAIT 20
 
+// START + LEFT BOOSTER CLICK = HOME
+#define MACRO_HOME true
+
+// START + RIGHT BOOSTER CLICK = RIGHT STICK CLICK (Toggle favorite)
+#define MACRO_CLICK true
+
+// START + LEFT BOOSTER LEFT = Capture
+#define MACRO_CAPTURE true
 
 // DEBOUNCING
 #define MINIMUM_PRESS_TIME   5

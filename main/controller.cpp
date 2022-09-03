@@ -236,40 +236,101 @@ void update_inputs() {
 
 
 void handle_macros() {
-    if (!buttons[START].state)
+    if (!buttons[START].raw_state)
         return;
     // every macros use the START button
 
-    if (buttons[LBOOSTER_CLICK].state) {
-        controller.pressButtonHome();
-        delay(100);
-        controller.releaseButtonHome();
+    if (MACRO_HOME) {
+        if (buttons[LBOOSTER_CLICK].raw_state) {
+            controller.pressButtonHome();
+            buttons[LBOOSTER_CLICK].state = false;
+            buttons[START].state = false;
+        } else {
+            controller.releaseButtonHome();
+        }
     }
 
-    if (buttons[RBOOSTER_CLICK].state) {
-        controller.pressButtonRClick();
-        delay(100);
-        controller.releaseButtonRClick();
+    if (MACRO_CLICK) {
+        if (buttons[RBOOSTER_CLICK].raw_state) {
+            controller.pressButtonRClick();
+            buttons[RBOOSTER_CLICK].state = false;
+            buttons[START].state = false;
+        } else {
+            controller.releaseButtonRClick();
+        }
     }
 
-    if (buttons[RBOOSTER_LEFT].state && buttons[RBOOSTER_UP].state)
-        controller.pressButtonCapture();
-    else
-        controller.releaseButtonCapture();
+    if (MACRO_CAPTURE) {
+        if (buttons[LBOOSTER_LEFT].raw_state) {
+            controller.pressButtonCapture();
+            buttons[LBOOSTER_LEFT].state = false;
+            buttons[START].state = false;
+        } else {
+            controller.releaseButtonCapture();
+        }
+    }
 }
 
+class Timer {
+    private:
+        unsigned long start = 0;
+        static unsigned long now;
+    public:
+        void reset() {
+            start = millis();
+        }
+
+        static void tick() {
+            now = millis();
+        }
+
+        unsigned long get() {
+            return now - start;
+        }
+};
+unsigned long Timer::now = 0;
+
+static auto LClickTimer = Timer();
+static auto RClickTimer = Timer();
+
 void handle_boosters() {
-    if (buttons[RBOOSTER_CLICK].raw_state) {
-        buttons[RBOOSTER_LEFT].state = false;
-        buttons[RBOOSTER_DOWN].state = false;
-        buttons[RBOOSTER_UP].state = false;
-        buttons[RBOOSTER_RIGHT].state = false;
-    }
-    if (buttons[LBOOSTER_CLICK].raw_state) {
-        buttons[LBOOSTER_LEFT].state = false;
-        buttons[LBOOSTER_DOWN].state = false;
-        buttons[LBOOSTER_UP].state = false;
-        buttons[LBOOSTER_RIGHT].state = false;
+    if (CLICK_DISABLES_DIRECTION) {
+        Timer::tick();
+        if (buttons[RBOOSTER_CLICK].raw_state) {
+            if (
+                buttons[RBOOSTER_LEFT].state
+                || buttons[RBOOSTER_DOWN].state
+                || buttons[RBOOSTER_UP].state
+                || buttons[RBOOSTER_RIGHT].state
+            ) {
+                if (RClickTimer.get() <= CLICK_DISABLES_DIRECTION_CLICK_WAIT)
+                    buttons[RBOOSTER_CLICK].state = false;
+                buttons[RBOOSTER_LEFT].state = false;
+                buttons[RBOOSTER_DOWN].state = false;
+                buttons[RBOOSTER_UP].state = false;
+                buttons[RBOOSTER_RIGHT].state = false;
+            }
+        } else {
+            RClickTimer.reset();
+        }
+
+        if (buttons[LBOOSTER_CLICK].raw_state) {
+            if (
+                buttons[LBOOSTER_LEFT].state
+                || buttons[LBOOSTER_DOWN].state
+                || buttons[LBOOSTER_UP].state
+                || buttons[LBOOSTER_RIGHT].state
+            ) {
+                if (LClickTimer.get() <= CLICK_DISABLES_DIRECTION_CLICK_WAIT)
+                    buttons[LBOOSTER_CLICK].state = false;
+                buttons[LBOOSTER_LEFT].state = false;
+                buttons[LBOOSTER_DOWN].state = false;
+                buttons[LBOOSTER_UP].state = false;
+                buttons[LBOOSTER_RIGHT].state = false;
+            }
+        } else {
+            LClickTimer.reset();
+        }
     }
 }
 
@@ -297,6 +358,7 @@ void update_buttons() {
     }
 
     handle_hat();
+
     controller.sendReport();
 }
 
